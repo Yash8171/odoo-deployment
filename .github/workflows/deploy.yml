@@ -10,31 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy application on EC2
+      - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          command_timeout: 60m
           script: |
             set -e
 
             cd ~/odoo-deployment
 
-            echo "Pulling latest code..."
+            echo "Pull latest code..."
             git fetch origin
             git reset --hard origin/main
 
-            echo "Stopping containers..."
-            docker-compose down
+            echo "Rebuild and restart..."
+            docker-compose up -d --build
 
-            echo "Building new image..."
-            docker-compose build --no-cache
+            echo "Running containers:"
+            docker ps
 
-            echo "Starting containers..."
-            docker-compose up -d
-
-            echo "Cleaning unused images..."
-            docker image prune -af
-
-            echo "Deployment completed."
+            echo "Deployment completed"
