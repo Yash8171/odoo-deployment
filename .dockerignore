@@ -1,0 +1,16 @@
+.git
+.github
+
+**/__pycache__
+**/*.pyc
+
+.vscode
+.idea
+
+*.log
+
+cats4u/**/__pycache__
+
+src/odoo_18_e/.git
+src/odoo_18_e/**/__pycache__
+src/odoo_18_e/**/*.pyc
